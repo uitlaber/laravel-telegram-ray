@@ -1,0 +1,32 @@
+{
+    "name": "uitlaber/laravel-telegram-ray",
+    "description": "A simple Laravel package to send ray() debug messages to Telegram.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "uitlaber",
+            "email": "uitlaber@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0",
+        "illuminate/http": "^9.0 || ^10.0 || ^11.0 || ^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uitlaber\\LaravelTelegramRay\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Uitlaber\\LaravelTelegramRay\\TelegramRayServiceProvider"
+            ]
+        }
+    }
+}
