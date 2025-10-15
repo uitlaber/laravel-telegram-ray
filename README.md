@@ -1,80 +1,85 @@
------
+---
 
 # Laravel Telegram Ray
 
-Простой и удобный пакет для Laravel, который добавляет helper-функцию `ray()`, отправляющую отладочную информацию прямо в ваш чат в Telegram. Это отличная альтернатива Xdebug, `dd()` или `dump()`, особенно при работе на удаленном сервере или когда вы хотите получать мгновенные уведомления.
+A simple and convenient Laravel package that adds a `ray()` helper function for sending debug information directly to your Telegram chat.
+It’s a great alternative to Xdebug, `dd()`, or `dump()`, especially when working on a remote server or when you want to receive instant notifications.
 
-## \#\# Возможности
+---
 
-  * **Простота использования:** Привычная функция `ray()` доступна в любом месте вашего Laravel-приложения.
-  * **Любые данные:** Отправляйте строки, массивы, объекты, коллекции, Eloquent-модели и даже исключения (`Exceptions`).
-  * **Полный контекст:** Каждое сообщение автоматически включает:
-      * Имя проекта.
-      * Относительный путь к файлу и номер строки, где была вызвана функция.
-      * Полный URL запроса, включая все GET-параметры.
-  * **Удобная конфигурация:** Вся настройка производится в `.env` файле.
-  * **Легко отключить:** Функцию можно полностью включить или выключить одной переменной в `.env`, не изменяя код.
+## ## Features
 
------
+* **Easy to use:** Familiar `ray()` function available anywhere in your Laravel application.
+* **Any data:** Send strings, arrays, objects, collections, Eloquent models, and even exceptions.
+* **Full context:** Each message automatically includes:
 
-## \#\# Установка
+  * Project name
+  * Relative file path and line number where the function was called
+  * Full request URL, including all GET parameters
+* **Flexible configuration:** All settings are handled in the `.env` file.
+* **Easily disabled:** You can enable or disable the function entirely with one `.env` variable, without changing your code.
 
-1.  Установите пакет с помощью Composer:
+---
 
-    ```bash
-    composer require uitlaber/laravel-telegram-ray
-    ```
+## ## Installation
 
-2.  Опубликуйте файл конфигурации:
+1. Install the package via Composer:
 
-    ```bash
-    php artisan vendor:publish --provider="Uitlaber\LaravelTelegramRay\TelegramRayServiceProvider"
-    ```
+   ```bash
+   composer require uitlaber/laravel-telegram-ray
+   ```
 
-    Это создаст файл `config/telegram-ray.php`.
+2. Publish the configuration file:
 
------
+   ```bash
+   php artisan vendor:publish --provider="Uitlaber\LaravelTelegramRay\TelegramRayServiceProvider"
+   ```
 
-## \#\# Настройка
+   This will create the file `config/telegram-ray.php`.
 
-Перед использованием вам нужно получить **токен бота** и ваш **ID чата** в Telegram.
+---
 
-1.  **Токен бота:** Создайте нового бота в Telegram с помощью **@BotFather** и скопируйте полученный API токен.
-2.  **ID чата:** Найдите в Telegram бота **@userinfobot**, запустите его, и он пришлет ваш персональный ID.
+## ## Configuration
 
-Теперь добавьте эти данные и переключатель `ENABLE_RAY_TELEGRAM` в ваш `.env` файл:
+Before using the package, you need to obtain your **bot token** and **chat ID** from Telegram.
+
+1. **Bot token:** Create a new bot using **@BotFather** in Telegram and copy the API token it provides.
+2. **Chat ID:** Open the **@userinfobot** in Telegram, start it, and it will send you your personal chat ID.
+
+Now add these values and the `ENABLE_RAY_TELEGRAM` toggle to your `.env` file:
 
 ```dotenv
 # .env
 
-# Включает (true) или выключает (false) отправку сообщений
+# Enables (true) or disables (false) sending messages
 ENABLE_RAY_TELEGRAM=true
 
-# Токен вашего бота от @BotFather
-TELEGRAM_BOT_TOKEN="ВАШ:СКОПИРОВАННЫЙ_ТОКЕН"
+# Your bot token from @BotFather
+TELEGRAM_BOT_TOKEN="YOUR:BOT_TOKEN"
 
-# Ваш ID чата от @userinfobot
-TELEGRAM_CHAT_ID="ВАШ_ID_ЧАТА"
+# Your chat ID from @userinfobot
+TELEGRAM_CHAT_ID="YOUR_CHAT_ID"
 ```
 
------
+---
 
-## \#\# Использование
+## ## Usage
 
-Вы можете вызывать функцию `ray()` в любом месте вашего приложения: в маршрутах, контроллерах, моделях, сервисах и даже в Blade-шаблонах (внутри `@php ... @endphp`).
+You can call the `ray()` function anywhere in your Laravel application —
+in routes, controllers, models, services, or even inside Blade templates (within `@php ... @endphp`).
 
-#### **Примеры:**
+#### **Examples:**
 
-**Отправка простого сообщения:**
+**Send a simple message:**
 
 ```php
 Route::get('/', function () {
-    ray('Пользователь зашел на главную страницу.');
+    ray('User visited the homepage.');
     return view('welcome');
 });
 ```
 
-**Отправка массива или объекта:**
+**Send an array or object:**
 
 ```php
 use App\Models\User;
@@ -83,18 +88,18 @@ $user = User::find(1);
 ray($user->toArray());
 ```
 
-**Отправка исключения:**
+**Send an exception:**
 
 ```php
 try {
-    // Код, который может вызвать ошибку
-    throw new \Exception('Что-то пошло не так!');
+    // Code that might throw an error
+    throw new \Exception('Something went wrong!');
 } catch (\Exception $e) {
     ray($e);
 }
 ```
 
-#### **Пример в Blade:**
+#### **Example in Blade:**
 
 ```blade
 @php
@@ -102,14 +107,14 @@ try {
     ray($data);
 @endphp
 
-<h1>Карточка товара</h1>
+<h1>Product Card</h1>
 ```
 
------
+---
 
-## \#\# Пример сообщения в Telegram
+## ## Example Message in Telegram
 
-Вот как будет выглядеть отладочное сообщение в вашем чате:
+Here’s how a debug message will appear in your Telegram chat:
 
 > 🚀 **Laravel**
 > 📄 `routes/web.php:6`
@@ -123,8 +128,10 @@ try {
 > }
 > ```
 
------
+---
 
-## \#\# Лицензия
+## ## License
 
-Этот пакет является программным обеспечением с открытым исходным кодом, распространяемым под лицензией [MIT license](LICENSE.md).
+This package is open-source software licensed under the [MIT license](LICENSE.md).
+
+---
